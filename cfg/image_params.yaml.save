@@ -1,0 +1,16 @@
+visual_servoing:  
+  ros_control:
+    rate: 14
+  image:
+    show_img: false
+    roi_initial: 320
+    threshold: [0.025,0.2]
+    min_area: 5
+    roi_range: 40
+    plant_radius: 1.0
+  control:
+    # gais: [kRho, KTheta, kV, kIRho, kITheta,kDRho,kDTheta]
+    # gains: [-3.2,0.01,0.1,0.007,0.0010,0.8,0.05]
+    gains: [-2.0,0.006,1.5,0.007,0.0010,0.8,0.05]
+    lin_vel: 0.8
+    control_pi: false
