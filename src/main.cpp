@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 {// Starting the main function for visual servoing control node
 
     // List of used variables
-    int rateHz, roiRange, roi;
+    int rateHz, roiRange, roi, ref;
     float plantRadius;
 
     bool showImg;
@@ -40,6 +40,7 @@ int main(int argc, char** argv)
     ros::param::get("visual_servoing/image/roi_range",roiRange);
     ros::param::get("visual_servoing/image/roi_initial",roi);
     ros::param::get("visual_servoing/image/plant_radius",plantRadius);
+    ref = roi;
 
     ros::Rate loop_rate(rateHz);
 
@@ -83,6 +84,8 @@ int main(int argc, char** argv)
             Image::updateRoi(filtredCentroids, roi);
         }
 
+        cv::line(rawImg, cv::Point(ref,0), cv::Point(ref,479), cv::Scalar(0, 255, 0), 1.5, cv::LINE_AA);
+
         cv::line(rawImg, cv::Point(roi-roiRange,0), cv::Point(roi-roiRange,479), cv::Scalar(255, 0, 0), 1, cv::LINE_AA);
         cv::line(rawImg, cv::Point(roi+roiRange,0), cv::Point(roi+roiRange,479), cv::Scalar(255, 0, 0), 1, cv::LINE_AA);
 
@@ -109,6 +112,7 @@ int main(int argc, char** argv)
         {
             visualServoing.pubVelocity(visualServoing.velocities(rho, lineSlope));
         }
+
         visualServoing.pubProcessedImage(rawImg);
 
         auto end = std::chrono::system_clock::now();

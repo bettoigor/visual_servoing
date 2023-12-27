@@ -105,38 +105,58 @@ void Controller::callbackStart(std_msgs::Bool msg)
 geometry_msgs::Twist Controller::velocities(float rho,float theta)
 {
 
-    // Applying low-pass filter
-    prevRho = prevRho + dt*(rho - prevRho);
-    prevSlope = prevSlope + dt*(theta - prevSlope);
+    cout << "Initial values: rho: " << rho << " theta: " << theta << endl
+         << "\nPrevious values: rho: " << prevRho << " slope: " << prevSlope << endl;;
 
-    // Controller gains
-    float kRho = GAINS[0];
-    float kTheta = GAINS[1];
-    float kV = GAINS[2];
-
-    // Computing the control error
-    float errRho = 0 - prevRho;
-    float errTheta = 0 - prevSlope;
-
-    // Computing the control signals
-    float slowDown = std::abs(errRho)*kV;
-    if (slowDown > LINVEL)
+    if (isnan(rho)  || isnan(theta))
     {
-        slowDown = LINVEL;
-    }
-    float v = LINVEL - slowDown;
-    float omega = - errRho*kRho - errTheta*kTheta;
-
-    // Filling the pub object
-    geometry_msgs::Twist cmdVel;
-    if (start)
-    {
-        cmdVel.linear.x = v;
-        cmdVel.angular.z = omega;
+        geometry_msgs::Twist cmdVel;
+        return cmdVel;
 
     }
+    else
+    {
+        prevRho = prevRho + dt * (rho - prevRho);
+        prevSlope = prevSlope + dt * (theta - prevSlope);
 
-    return cmdVel;
+
+
+        // Controller gains
+        float kRho = GAINS[0];
+        float kTheta = GAINS[1];
+        float kV = GAINS[2];
+
+        // Computing the control error
+        float errRho = -prevRho;
+        float errTheta = -prevSlope;
+
+        cout << "Errors: rho: " << errRho
+             << " theta: " << errTheta
+             << " rho: " << rho << " theta: " << theta
+             << "\nPrevious values: rho: " << prevRho
+             << " slope: " << prevSlope << endl;
+
+
+        // Computing the control signals
+        float slowDown = std::abs(errRho) * kV;
+        if (slowDown > LINVEL) {
+            slowDown = LINVEL;
+        }
+        float v = LINVEL - slowDown;
+        float omega = -errRho * kRho - errTheta * kTheta;
+
+        cout << "Output velocities: v: " << v << " omega: " << omega << endl;
+
+        // Filling the pub object
+        geometry_msgs::Twist cmdVel;
+        if (start) {
+            cmdVel.linear.x = v;
+            cmdVel.angular.z = omega;
+
+        }
+
+        return cmdVel;
+    }
 }
 
 geometry_msgs::Twist Controller::velocitiesPI(float rho,float theta)

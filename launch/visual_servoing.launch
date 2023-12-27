@@ -5,14 +5,15 @@
 	
     <node name="visual_servoing" 
         pkg="visual_servoing" 
-        type="visual_servoing_node">
-        <!--output="screen"-->
+        type="visual_servoing_node"
+        output="screen">
 
-	<remap from="image_raw" to="/camera/color/image_raw"/>
+	<!--remap from="image_raw" to="/camera/color/image_raw"/-->
+	<remap from="image_raw" to="/soybot/camera/center/image_raw"/>
 	<remap from="processed_img" to="/visual_servoing/processed_img"/>
 	<remap from="start" to="/visual_servoing/start"/>
 	<remap from="reset" to="/visual_servoing/reset"/>
-        <remap from="cmd_vel" to="/visual_servoing/cmd_vel"/>
+        <remap from="cmd_vel" to="/soybot/cmd_vel"/>
 
 	</node>
 	

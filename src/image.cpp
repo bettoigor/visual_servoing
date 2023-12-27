@@ -91,6 +91,7 @@ void Image::fitLine(cv::Mat &img, std::vector<cv::Point2f> &contourCenters, std:
 
     }
 }
+
 void Image::updateRoi(std::vector<cv::Point2f> &points, int &roi){
     int axis = 0;
     for(auto &it: points){

@@ -13,6 +13,7 @@ float utils::calcSlope(cv::Point initial, cv::Point final)
 
         return phi * 180/M_PI;
 }
+
 bool utils::sortPoints(cv::Point p1, cv::Point p2)
 {
     return (p1.y) < (p2.y);
@@ -27,6 +28,7 @@ float utils::calcSlopeRad(cv::Point initial, cv::Point final)
 
     return phi;
 }
+
 std::pair<cv::Point,cv::Point>utils::lineMean(std::vector<std::pair<cv::Point,cv::Point>> line)
 {
     int mean1 = 0;
@@ -41,14 +43,17 @@ std::pair<cv::Point,cv::Point>utils::lineMean(std::vector<std::pair<cv::Point,cv
 
     return std::make_pair(cv::Point(line[0].first.x,mean1/n),cv::Point(line[0].second.x,mean2/n));
 }
+
 int utils::lineMedian(int size)
 {
     return (size+1)/2;
 }
+
 bool utils::sortLine(std::pair<cv::Point,cv::Point> l1,std::pair<cv::Point,cv::Point> l2)
 {
     return (l1.first.y < l2.first.y);
 }
+
 double utils::calcDistance(const cv::Point &a, const cv::Point &b, const cv::Point &p)
 {
     double numerator = abs((b.y - a.y)*p.x - (b.x - a.x)*p.y + b.x*a.y - b.y*a.x);
@@ -56,6 +61,7 @@ double utils::calcDistance(const cv::Point &a, const cv::Point &b, const cv::Poi
 
     return numerator/denominator;
 }
+
 std::pair<cv::Point,cv::Point>utils::calcDistanceLines(std::vector<std::pair<cv::Point,cv::Point>> line)
 {
     std::vector<float> distances;
